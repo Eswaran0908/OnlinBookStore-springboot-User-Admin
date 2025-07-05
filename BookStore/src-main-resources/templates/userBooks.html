@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User || Books List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Navbar Text Color and Hover Effects */
+        .navbar-nav .nav-link {
+            color: white !important;
+            transition: color 0.3s ease-in-out;
+            padding: 10px 15px;
+            /* Add padding to navbar links */
+            margin-right: 15px;
+            /* Add margin to the right of each link */
+            border-radius: 10px;
+            /* Optional: Add border-radius for rounded corners */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f8f6 !important;
+            /* Gold color on hover */
+            background-color: rgba(206, 179, 25, 0.934);
+            /* Light gold background on hover */
+            border-radius: 10px;
+            /* Rounded corners when hovered */
+            padding: 10px 15px;
+            /* Ensure padding remains the same when hovered */
+        }
+
+
+        /* Custom styles for the card images */
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+
+        .card-body {
+            text-align: center;
+        }
+
+        /* Centering the search form inputs and styling */
+        .search-form input {
+            margin-right: 10px;
+            border-radius: 15px;
+        }
+
+        .search-form button {
+            border-radius: 15px;
+        }
+
+        /* Styling the buttons with border radius */
+        .btn-custom {
+            border-radius: 15px;
+        }
+
+        /* Pagination container */
+        .pagination-container {
+            text-align: center;
+            /* Center the pagination */
+        }
+
+        /* Style for pagination buttons */
+        .pagination-container .btn {
+            margin: 0 5px;
+            /* Space out the buttons */
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Style for active page button */
+        .pagination-container .btn.active {
+            background-color: #007bff;
+            /* Blue background for active page */
+            color: white;
+            /* White text for active page */
+            cursor: not-allowed;
+            /* Disable click for active page */
+        }
+
+        /* Hover effect for page number links */
+        .pagination-container .btn:hover {
+            background-color: #5a6268;
+            /* Darker background on hover */
+            color: white;
+            /* White text on hover */
+        }
+
+        /* Hover effect for previous and next buttons */
+        .pagination-container .btn-secondary:hover {
+            background-color: #0056b3;
+            /* Darker background for prev/next */
+            color: white;
+            /* White text on hover */
+        }
+
+        /* Style for previous and next buttons */
+        .pagination-container .prev-btn,
+        .pagination-container .next-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        /* Disabled (not clickable) state for prev/next buttons */
+        .pagination-container .btn-secondary[disabled] {
+            background-color: #cccccc;
+            /* Gray color for disabled buttons */
+            cursor: not-allowed;
+            /* Disable cursor */
+        }
+
+
+        /* Adjusting layout for the search form */
+        .search-form {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for the "Search" Button */
+        .btn-search {
+            border-radius: 15px;
+        }
+
+
+        /* Custom styles for the card container */
+        .book-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .book-image {
+            flex: 0 0 150px;
+            /* Fixed width for the image */
+            height: 200px;
+            overflow: hidden;
+            margin-right: 100px;
+            margin-left: 100px;
+            border-radius: 5px;
+        }
+
+        .book-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .book-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .author-name {
+            font-size: 1em;
+            color: #007bff;
+            /* Blue color for author */
+            margin-bottom: 10px;
+        }
+
+        .book-description {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Styling for the "View Details" Button */
+        .btn-view-details {
+            border-radius: 15px;
+            margin-top: 20px;
+            margin-left: 300px;
+            background-color: #007bff;
+            /* Default background color */
+            color: white;
+            /* Default text color */
+            border: none;
+            /* Remove border */
+        }
+
+        /* Hover Effect for the "View Details" Button */
+        .btn-view-details:hover,
+        .btn-search:hover {
+            background-color: #b119c5;
+            /* Darker blue for hover effect */
+            color: #fff;
+            /* Keep text color white on hover */
+        }
+
+        .btn-view-details:active {
+            transform: scale(1.5);
+        }
+
+
+        #anch {
+            color: white;
+        }
+
+        #ac {
+            color: rgb(187, 186, 186);
+        }
+
+        .none {
+            text-decoration: none;
+        }
+
+        .hr {
+            color: rgb(14, 155, 108);
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .footer-icon {
+            margin-right: 15px;
+            /* Space between icons */
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Footer Section Styling */
+        .footer-section {
+            background-color: #f4f4f4;
+            /* Light gray background */
+            padding: 30px 15px;
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+        }
+
+        /* Footer Heading Styling */
+        .footer-heading {
+            color: #4CAF50;
+            /* Green color for the heading */
+            font-family: 'Roboto', sans-serif;
+            /* Custom font family */
+            font-size: 2rem;
+            /* Larger font size */
+            font-weight: bold;
+            text-transform: uppercase;
+            /* Make text uppercase */
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            /* Slight letter spacing */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle text shadow */
+        }
+
+        /* Social Icons Customization */
+        .footer-icon img {
+            border-radius: 50%;
+            /* Make icons round */
+            transition: transform 0.3s ease-in-out;
+            /* Smooth transition for hover effect */
+        }
+
+        .footer-icon img:hover {
+            transform: scale(1.1);
+            /* Slightly increase size on hover */
+        }
+
+        /* Optional: Add a footer text section with additional information */
+        .footer-text {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .footer-heading {
+                font-size: 1.5rem;
+                /* Smaller font size on mobile */
+            }
+        }
+
+
+        .footer-links h3 {
+            color: #007bff;
+            /* Blue */
+        }
+
+        /* Remove underlines */
+        .footer-links a,
+        .footer-icon,
+        .footer-heading {
+            text-decoration: none;
+        }
+
+        /* Copyright symbol styling */
+        .footer-copyright {
+            font-size: 20px;
+            color: white;
+            background-color: #3d556d;
+            padding: 10px;
+        }
+
+        .footer-copyright a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        /* Remove the underline from the links */
+        .footer-icon {
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Make sure the anchor tag is displayed as an inline-block */
+            margin: 5px;
+            /* Add some space between icons */
+        }
+
+        /* Ensure the icons are aligned properly */
+        .footer-icon img {
+            vertical-align: middle;
+            /* Ensure the icon is aligned properly */
+            transition: opacity 0.3s;
+            /* Optional: smooth hover effect */
+        }
+
+        /* Optional: Add hover effect */
+        .footer-icon:hover img {
+            opacity: 0.5;
+            /* Slightly fade the icons when hovered */
+        }
+
+        /* Footer Container */
+        .footer-container {
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            text-align: center;
+            border: 2px solid #dde4ec;
+            /* Blue border */
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Soft shadow for depth */
+        }
+
+        /* Fixed background container */
+        .fixed-background {
+            height: 70px;
+            margin-bottom: 5px;
+            background: linear-gradient(rgb(204, 181, 67), rgb(95, 143, 197));
+            /* Gradient background */
+            padding: 15px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        /* Style for the h1 heading */
+        h1.text-center {
+            font-size: 2rem;
+            color: rgb(161, 30, 16);
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            white-space: nowrap;
+            position: absolute;
+            text-shadow: 3px 3px 3px rgba(225, 206, 6, 0.878);
+            transform: translateX(-100%);
+            animation: moveHorizontal 15s ease-in-out infinite;
+        }
+
+        /* Keyframes for horizontal movement (left to right) */
+        @keyframes moveHorizontal {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100vw);
+            }
+        }
+
+
+        .book-name {
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0d7bc5;
+            margin-bottom: 8px;
+        }
+
+        .author-name {
+            font-family: 'Arial', sans-serif;
+            font-size: 18px;
+            color: #872e2e;
+            margin-bottom: 12px;
+        }
+
+        .book-price {
+            font-family: 'Arial', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0d9046;
+        }
+
+        /* Fullscreen background for the alert */
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent black background */
+            display: none;
+            /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Ensure it's on top */
+        }
+
+        /* Styling for the alert message box */
+        .alert-message {
+            background-color: white;
+            color: red;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Bell icon with shake animation */
+        .shake-icon {
+            font-size: 30px;
+            animation: shake 0.5s ease-in-out infinite;
+            /* Apply shake animation */
+            margin-bottom: 10px;
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* OK Button Styling */
+        #okButton {
+            margin-top: 15px;
+            background-color: #d71a10;
+            color: white;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #okButton:hover {
+            background-color: #c4180d;
+        }
+
+        /* Container for the welcome message */
+        h1 {
+            font-family: 'Courier New', Courier, monospace;
+            /* Professional font */
+            color: #333;
+            /* Dark gray text color for readability */
+            text-align: center;
+            /* Center the text */
+            margin-top: 50px;
+            /* Add some space from the top */
+            font-size: 36px;
+            /* Make the font size larger */
+            font-weight: 600;
+            /* Slightly bold for emphasis */
+        }
+
+        /* Styling for the username in the h1 */
+        h1 span {
+            color: #007bff;
+            /* Blue color for the username */
+            font-weight: 700;
+            /* Bold for emphasis */
+            text-transform: uppercase;
+            /* Convert text to uppercase */
+        }
+
+
+        /* Optional: Adding some subtle shadow effect to the title */
+        h1 {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            /* Soft shadow */
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 28px;
+                /* Reduce font size on smaller screens */
+            }
+
+            h1 span {
+                font-size: 30px;
+                /* Slightly larger for the username on mobile */
+            }
+        }
+
+
+
+        /* Subscription Info Section */
+        .subscription-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f3efef;
+            /* Light gray background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        /* Green color when valid subscription is selected */
+        .subscription-info.valid p {
+            color: green;
+            /* Green for valid plan */
+        }
+
+        /* Styling for Subscription Plan text */
+        #subscription-plan-text {
+            color: rgb(117, 77, 218);
+            font-weight: bold;
+        }
+
+        .no-plan {
+            color: #ff4d4d;
+            /* Red color for 'No Plan' */
+            font-weight: bold;
+        }
+
+        .no-price {
+            color: #ff4d4d;
+            /* Red color for '0' price */
+            font-weight: bold;
+        }
+
+
+        /* Styling for Subscription Price text */
+        #subscription-price-text {
+            color: rgb(117, 77, 218);
+            font-weight: bold;
+        }
+
+        /* Heading Styling */
+        .subscription-info h3 {
+            font-size: 1.5rem;
+            color: #1a9fdd;
+            font-weight: bold;
+            margin-right: 20px;
+            margin-bottom: 0;
+        }
+
+        /* Styling for Text (Subscription Plan and Price) */
+        .subscription-info p {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+
+        /* Button Styling */
+        .subscription-info .btn-custom {
+            background-color: #891e8d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .subscription-info .btn-custom:hover {
+            background-color: #0d6311;
+        }
+
+        /* Responsive design to ensure it stays in one row on larger screens */
+        @media (max-width: 768px) {
+            .subscription-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .subscription-info h3,
+            .subscription-info p,
+            .subscription-info .btn-custom {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-success navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home/book">BOOK'S_STORE</a>
+
+            <!-- Navbar Toggler Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/books">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/myLibrary">My Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Your Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Book List Section -->
+    <div class="container mt-3">
+
+        <!-- Animated Heading for Filter Books List -->
+        <div class="fixed-background">
+            <h1 class="text-center">Filter By Book's</h1>
+        </div>
+
+        <!-- Search Form -->
+        <form th:action="@{/user/books}" method="get" th:object="${book}" class="search-form mb-3">
+            <input type="text" th:name="query" th:value="${query}" placeholder="Search by book name..."
+                class="form-control mb-2">
+            <input type="text" th:name="minPrice" th:value="${minPrice}" placeholder="Min Price"
+                class="form-control mb-2">
+            <input type="text" th:name="maxPrice" th:value="${maxPrice}" placeholder="Max Price"
+                class="form-control mb-2">
+            <input type="text" th:name="authorName" th:value="${authorName}" placeholder="Author Name"
+                class="form-control mb-2">
+            <button type="submit" class="btn btn-primary btn-search mt-2">Search</button>
+        </form>
+
+
+        <!-- Search Query Result Message (only shows when there is a query) -->
+        <div th:if="${query != '' || minPrice != 0 || maxPrice != 0 || authorName != ''}">
+            <div class="search-query d-flex align-items-center p-3 mb-4 rounded border bg-light">
+                <!-- Green Bell Icon with Hover Effect -->
+                <i class="fas fa-bell me-3" style="color: green; font-size: 1.5rem;"></i>
+
+                <!-- Search Results Text with Styling -->
+                <div class="ms-3">
+                    <strong class="h5">Search Results for:</strong>
+
+                    <!-- Dynamically display query conditions with different colors and spacing -->
+                    <span class="fw-bold">
+                        <span th:if="${query != ''}" class="text-primary me-3" th:text="'Name: ' + ${query}">Search
+                            Term</span>
+                        <span th:if="${minPrice != 0}" class="text-success me-3"
+                            th:text="'Min Price: ₹' + ${minPrice}">Min Price</span>
+                        <span th:if="${maxPrice != 0}" class="text-warning me-3"
+                            th:text="'Max Price: ₹' + ${maxPrice}">Max Price</span>
+                        <span th:if="${authorName != ''}" class="text-danger"
+                            th:text="'Author: ' + ${authorName}">Author Name</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- In your userBooks.html, add the following to display the subscription details -->
+        <div class="container mt-4">
+
+
+            <div class="container text-center">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <h1>Welcome, <span th:text="${user.username}">User</span>!</h1>
+                </div>
+
+
+                <!-- Subscription Plan Info Section -->
+                <div class="subscription-info">
+                    <h3>Your Subscription Plan</h3>
+                    <p id="subscription-plan-text">
+                        Subscription Plan:
+                        <span th:text="${subscriptionPlan}"
+                            th:class="${subscriptionPlan == 'No Plan' ? 'no-plan' : ''}">
+                            No Plan Selected
+                        </span>
+                    </p>
+                    <p id="subscription-price-text">
+                        Subscription Price: ₹<span th:text="${subscriptionPrice}"
+                            th:class="${subscriptionPrice == 0 ? 'no-price' : ''}">0</span>
+                    </p>
+
+                    <a href="/subscription" class="btn btn-custom">Manage Subscription</a>
+                </div>
+
+
+
+            </div>
+
+            <!-- Custom Alert Modal -->
+            <div id="customAlert" class="custom-alert">
+                <div class="alert-message">
+                    <i class="fas fa-bell text-danger shake-icon"></i> <!-- Bell Icon -->
+                    <p id="alertMessage">Please first subscribe to a plan.</p>
+                    <!-- OK Button -->
+                    <button id="okButton" class="btn btn-danger">OK</button>
+                </div>
+            </div>
+
+            <!-- Audio element for the bell sound -->
+            <audio id="bellSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+
+
+        </div>
+
+
+        <!-- Book List Section -->
+        <div class="row mt-5">
+
+            <!-- If books found -->
+            <div th:if="${books.totalElements > 0}">
+                <div class="row">
+
+                    <!-- Loop through each book and display it in a column -->
+                    <div th:each="book : ${books.content}" class="col-md-12">
+                        <div class="book-card">
+                            <!-- Book Image -->
+                            <div class="book-image">
+                                <img th:if="${book.imageURL != null}" th:src="${book.imageURL}" alt="Book Image">
+                            </div>
+
+                            <!-- Book Info (Name, Author, Description) -->
+                            <div class="book-info">
+                                <div class="book-name" th:text="${book.name}"></div>
+                                <div class="author-name" th:text="${book.authorName}"></div>
+                                <div class="book-price">₹<span th:text="${book.price}"></span></div>
+
+                                <div class="book-description" th:text="${book.description}"></div>
+
+                                <div class="btn btn-view-details">
+                                    <!-- View Details link (book ID passed dynamically) -->
+                                    <a href="javascript:void(0);" class="viewDetailsLink" th:data-id="${book.id}">View
+                                        Details</a>
+
+                                </div>
+                                <!-- Hidden Inputs for Subscription Info -->
+                                <input type="hidden" id="subscriptionPlan" th:value="${subscriptionPlan}" />
+                                <input type="hidden" id="subscriptionPrice" th:value="${subscriptionPrice}" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- If no books found, display an error message -->
+                <div th:if="${books.totalElements == 0}" class="alert alert-danger d-flex align-items-center"
+                    role="alert">
+                    <!-- Red Bell Icon for Error -->
+                    <i class="fas fa-bell me-2 text-danger"></i>
+                    <p class="mb-0">No books found.</p>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Pagination -->
+        <div th:if="${books.totalPages > 1}" class="pagination-container">
+            <!-- Previous Page Link -->
+            <a th:href="@{/user/books(page=${books.number - 1}, query=${query})}" th:if="${books.hasPrevious()}"
+                class="btn btn-secondary prev-btn">Previous</a>
+
+            <!-- Page Number Links -->
+            <span th:each="pageNum : ${#numbers.sequence(0, books.totalPages - 1)}">
+                <a th:href="@{/user/books(page=${pageNum}, query=${query})}" th:text="${pageNum + 1}"
+                    class="btn btn-link" th:classappend="${pageNum == books.number ? ' active' : ''}"></a>
+                <span>&nbsp;&nbsp;</span>
+            </span>
+
+            <!-- Next Page Link -->
+            <a th:href="@{/user/books(page=${books.number + 1}, query=${query})}" th:if="${books.hasNext()}"
+                class="btn btn-secondary next-btn">Next</a>
+        </div>
+
+    </div>
+
+    <!-- Footer Content -->
+    <div class="row mx-1 p-1 footer-container">
+        <!--Start of Footer-->
+        <div class="col-md-5">
+            <h3 class="footer-heading"> BOOK'S STORE PVT LTD.</h3>
+            <i class="fa-solid fa-address-card"></i>
+            2nd Floor, Room no:13<br>
+            Annanagar 5th-Avenue,<br>
+            Chennai-600 028<br>
+            <a href="https://www.google.com/maps/place/Chennai,+Tamil+Nadu/@13.0478078,80.044198,11z/data=!3m1!4b1!4m6!3m5!1s0x3a5265ea4f7d3361:0x6e61a70b6863d433!8m2!3d13.0843007!4d80.2704622!16zL20vMGM4dGs?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D"
+                class="icon footer-icon-location">
+                <img src="https://i.pinimg.com/564x/d2/77/05/d27705e1b3b219af201765faf9ad20e3.jpg" alt="Google Maps"
+                    style="width: 35px; height: 35px; vertical-align: middle;">
+                View on Location
+            </a>
+
+        </div>
+        <div class="col-md-3 footer-links">
+            <h3>Quick Links</h3>
+            <a href="Online_Book_Store.html" class="anchr">Home</a>
+            <a href="" class="anchr">About Us</a>
+            <a href="https://wa.me/6361232640" class="anchr">Help</a>
+
+        </div>
+        <div class="col-md-3 ">
+            <h3>Connect Us</h3>
+            <!-- Facebook Official Icon -->
+            <a href="https://www.facebook.com" class="icon footer-icon footer-icon-facebook" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" style="width: 40px; height: 45px; vertical-align: middle;">
+            </a>
+
+            <!-- Instagram Official Icon -->
+            <a href="https://www.instagram.com" class="icon footer-icon footer-icon-instagram" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                    style="width: 40px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- LinkedIn Official Icon -->
+            <a href="https://www.linkedin.com" class="icon footer-icon footer-icon-linkedin" target="_blank">
+                <img src="https://cdn.pixabay.com/photo/2017/08/22/11/56/linked-in-2668700_1280.png" alt="LinkedIn"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Twitter Official Icon -->
+            <a href="https://twitter.com" class="icon footer-icon footer-icon-twitter" target="_blank">
+                <img src="https://img.clipart-library.com/2/clip-twitterlogo/clip-twitterlogo-32.jpg" alt="Twitter"
+                    style="width: 60px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- WhatsApp Official Icon -->
+            <a href="https://wa.me/6361232640" class="icon footer-icon footer-icon-whatsapp" target="_blank">
+                <img src="https://thumbs.dreamstime.com/b/basic-rgb-134797129.jpg" alt="WhatsApp"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Gmail Official Icon with mailto link -->
+            <a href="mailto:eswaranraja555@gmail.com" class="icon footer-icon footer-icon-gmail" target="_blank">
+                <img src="https://t4.ftcdn.net/jpg/07/30/83/21/360_F_730832157_UfU2mrMRkn4Nf83Wsea6Y3lC6UQs89L5.jpg"
+                    alt="Gmail" style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+        </div>
+
+    </div><!--End of footer-->
+
+    <!-- Copyright Section -->
+    <div class="text-center footer-copyright">
+        &copy; 2025 Book's Store Pvt Ltd. All rights reserved.
+    </div>
+
+    <script>
+        // Attach event listener to all "View Details" links
+        var viewDetailsLinks = document.querySelectorAll(".viewDetailsLink");
+
+        viewDetailsLinks.forEach(function (link) {
+            link.addEventListener("click", function () {
+                // Get the book ID dynamically from the link's data-id attribute
+                var bookId = this.getAttribute("data-id");
+
+                // Get subscription plan and price values from hidden inputs
+                var subscriptionPlan = document.getElementById("subscriptionPlan").value;
+                var subscriptionPrice = document.getElementById("subscriptionPrice").value;
+
+                // Check if the user has a subscription plan and a valid price
+                if (!subscriptionPlan || subscriptionPlan.trim() === "" || subscriptionPrice === "0.0") {
+                    showCustomAlert("Please first subscribe to a plan.");
+                } else {
+                    // Redirect to the book details page with the book ID
+                    window.location.href = "/book/details/" + bookId; // Navigate to the book details page
+                }
+            });
+        });
+
+
+        // Function to show the custom alert
+        function showCustomAlert(message) {
+            // Set the alert message
+            document.getElementById("alertMessage").innerText = message;
+
+            // Display the custom alert modal
+            var alertModal = document.getElementById("customAlert");
+            alertModal.style.display = 'flex';
+
+            // Play the bell sound
+            var bellSound = document.getElementById("bellSound");
+            bellSound.play();
+
+            // Hide the modal after 5 seconds
+            setTimeout(function () {
+                alertModal.style.display = 'none';
+            }, 5000); // 5000ms = 5 seconds
+        }
+
+        // Add event listener to the OK button to close the modal
+        document.getElementById("okButton").addEventListener("click", function () {
+            var alertModal = document.getElementById("customAlert");
+            alertModal.style.display = 'none'; // Close the modal immediately when OK is clicked
+            var bellSound = document.getElementById("bellSound");
+            bellSound.pause(); // Stop the bell sound if the user clicks OK
+        });
+
+    </script>
+
+
+</body>
+
+</html>

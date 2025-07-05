@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table th,
+        .table td {
+            border-radius: 10px;
+        }
+
+        .btn-custom {
+            border-radius: 15px;
+            padding: 5px 15px;
+        }
+
+        .btn-custom:hover {
+            background-color: #006400 !important;
+            border-color: #006400 !important;
+        }
+
+        .form-control {
+            max-width: 80px;
+            margin: 0 auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+        }
+
+        .action-buttons form {
+            margin-bottom: 0;
+        }
+
+
+        #anch {
+            color: white;
+        }
+
+        #ac {
+            color: rgb(187, 186, 186);
+        }
+
+        .none {
+            text-decoration: none;
+        }
+
+        .hr {
+            color: rgb(14, 155, 108);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .footer-icon {
+            margin-right: 15px;
+            /* Space between icons */
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Footer Section Styling */
+        .footer-section {
+            background-color: #f4f4f4;
+            /* Light gray background */
+            padding: 30px 15px;
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+        }
+
+        /* Footer Heading Styling */
+        .footer-heading {
+            color: #4CAF50;
+            /* Green color for the heading */
+            font-family: 'Roboto', sans-serif;
+            /* Custom font family */
+            font-size: 2rem;
+            /* Larger font size */
+            font-weight: bold;
+            text-transform: uppercase;
+            /* Make text uppercase */
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            /* Slight letter spacing */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle text shadow */
+        }
+
+        /* Social Icons Customization */
+        .footer-icon img {
+            border-radius: 50%;
+            /* Make icons round */
+            transition: transform 0.3s ease-in-out;
+            /* Smooth transition for hover effect */
+        }
+
+        .footer-icon img:hover {
+            transform: scale(1.1);
+            /* Slightly increase size on hover */
+        }
+
+        /* Optional: Add a footer text section with additional information */
+        .footer-text {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .footer-heading {
+                font-size: 1.5rem;
+                /* Smaller font size on mobile */
+            }
+        }
+
+
+        .footer-links h3 {
+            color: #007bff;
+            /* Blue */
+        }
+
+        /* Remove underlines */
+        .footer-links a,
+        .footer-icon,
+        .footer-heading {
+            text-decoration: none;
+        }
+
+        /* Copyright symbol styling */
+        .footer-copyright {
+            font-size: 20px;
+            color: white;
+            background-color: #3d556d;
+            padding: 10px;
+        }
+
+        .footer-copyright a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        /* Remove the underline from the links */
+        .footer-icon {
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Make sure the anchor tag is displayed as an inline-block */
+            margin: 5px;
+            /* Add some space between icons */
+        }
+
+        /* Ensure the icons are aligned properly */
+        .footer-icon img {
+            vertical-align: middle;
+            /* Ensure the icon is aligned properly */
+            transition: opacity 0.3s;
+            /* Optional: smooth hover effect */
+        }
+
+        /* Optional: Add hover effect */
+        .footer-icon:hover img {
+            opacity: 0.5;
+            /* Slightly fade the icons when hovered */
+        }
+
+        /* Footer Container */
+        .footer-container {
+            background-color: white;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            text-align: center;
+            border: 2px solid #b4cae3;
+            /* Blue border */
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Soft shadow for depth */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-success navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home/book">BOOK'S_STORE</a>
+
+            <!-- Navbar Toggler Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/books">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/myLibrary">My Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Your Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5">
+        <h1>Your Cart</h1>
+
+        <div th:if="${cartItems != null and cartItems.size() > 0}">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Book ID</th>
+                        <th>Book Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="entry : ${cartItems}">
+                        <td th:text="${entry.key}"></td> <!-- Book ID -->
+                        <td th:text="${books[entry.key].name}"></td> <!-- Book Name -->
+                        <td>
+                            <!-- Quantity Input Field -->
+                            <form th:action="@{/update-cart}" method="post">
+                                <input type="hidden" th:name="bookId" th:value="${entry.key}" />
+                                <input type="number" th:name="quantity" th:value="${entry.value}" min="1"
+                                    class="form-control" />
+                            </form>
+                        </td>
+                        <td th:text="${books[entry.key].price}"></td> <!-- Price -->
+                        <td th:text="${books[entry.key].price * entry.value}"></td> <!-- Total (Price * Quantity) -->
+                        <td>
+                            <div class="action-buttons">
+                                <!-- Update Button -->
+						                                
+						         <form th:action="@{/update-cart}" method="post">
+								    <input type="hidden" th:name="bookId" th:value="${entry.key}" />
+								    <input type="number" th:name="quantity" th:value="${entry.value}" min="1" max="10" class="form-control" />
+								    <button type="submit" class="btn btn-warning mt-2">Update</button>
+								</form>
+
+                                <!-- Remove Button -->
+                                <form th:action="@{/remove-from-cart}" method="post">
+                                    <br>
+                                    <input type="hidden" th:name="bookId" th:value="${entry.key}" />
+                                    <button type="submit" class="btn btn-danger btn-custom">Remove</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Total Price -->
+            <h3>Total: ₹<span th:text="${total}"></span></h3>
+
+            <!-- Proceed to Checkout Button -->
+            <a href="/payment-checkout" class="btn btn-success btn-custom">Proceed to Payment</a>
+        </div>
+        <div>
+            <br>
+            <a href="/user/books" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+
+        <div th:if="${cartItems == null or cartItems.size() == 0}">
+            <p>Your cart is empty.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional for collapsible navbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+
+
+
+    <!-- Footer Content -->
+    <div class="row mx-1 p-1 footer-container">
+        <!--Start of Footer-->
+        <div class="col-md-5">
+            <h3 class="footer-heading"> BOOK'S STORE PVT LTD.</h3>
+            <i class="fa-solid fa-address-card"></i>
+            2nd Floor, Room no:13<br>
+            Annanagar 5th-Avenue,<br>
+            Chennai-600 028<br>
+            <a href="https://www.google.com/maps/place/Chennai,+Tamil+Nadu/@13.0478078,80.044198,11z/data=!3m1!4b1!4m6!3m5!1s0x3a5265ea4f7d3361:0x6e61a70b6863d433!8m2!3d13.0843007!4d80.2704622!16zL20vMGM4dGs?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D"
+                class="icon footer-icon-location">
+                <img src="https://i.pinimg.com/564x/d2/77/05/d27705e1b3b219af201765faf9ad20e3.jpg" alt="Google Maps"
+                    style="width: 35px; height: 35px; vertical-align: middle;">
+                View on Location
+            </a>
+
+        </div>
+        <div class="col-md-3 footer-links">
+            <h3>Quick Links</h3>
+            <a href="Online_Book_Store.html" class="anchr">Home</a>
+            <a href="" class="anchr">About Us</a>
+            <a href="https://wa.me/6361232640" class="anchr">Help</a>
+
+        </div>
+        <div class="col-md-3 ">
+            <h3>Connect Us</h3>
+            <!-- Facebook Official Icon -->
+            <a href="https://www.facebook.com" class="icon footer-icon footer-icon-facebook" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" style="width: 40px; height: 45px; vertical-align: middle;">
+            </a>
+
+            <!-- Instagram Official Icon -->
+            <a href="https://www.instagram.com" class="icon footer-icon footer-icon-instagram" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                    style="width: 40px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- LinkedIn Official Icon -->
+            <a href="https://www.linkedin.com" class="icon footer-icon footer-icon-linkedin" target="_blank">
+                <img src="https://cdn.pixabay.com/photo/2017/08/22/11/56/linked-in-2668700_1280.png" alt="LinkedIn"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Twitter Official Icon -->
+            <a href="https://twitter.com" class="icon footer-icon footer-icon-twitter" target="_blank">
+                <img src="https://img.clipart-library.com/2/clip-twitterlogo/clip-twitterlogo-32.jpg" alt="Twitter"
+                    style="width: 60px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- WhatsApp Official Icon -->
+            <a href="https://wa.me/6361232640" class="icon footer-icon footer-icon-whatsapp" target="_blank">
+                <img src="https://thumbs.dreamstime.com/b/basic-rgb-134797129.jpg" alt="WhatsApp"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Gmail Official Icon with mailto link -->
+            <a href="mailto:eswaranraja555@gmail.com" class="icon footer-icon footer-icon-gmail" target="_blank">
+                <img src="https://t4.ftcdn.net/jpg/07/30/83/21/360_F_730832157_UfU2mrMRkn4Nf83Wsea6Y3lC6UQs89L5.jpg"
+                    alt="Gmail" style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+
+        </div>
+
+    </div><!--End of footer-->
+
+    <!-- Copyright Section -->
+    <div class="text-center footer-copyright">
+        &copy; 2025 Book's Store Pvt Ltd. All rights reserved.
+    </div>
+</body>
+
+</html>

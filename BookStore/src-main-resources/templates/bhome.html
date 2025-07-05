@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- For Popup -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- For Bell Icon -->
+    <!-- Add Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+    <style>
+        /* Navbar Text Color and Hover Effects */
+        .navbar-nav .nav-link {
+            color: white !important;
+            transition: color 0.3s ease-in-out;
+            padding: 10px 15px;
+            /* Add padding to navbar links */
+            margin-right: 15px;
+            /* Add margin to the right of each link */
+            border-radius: 10px;
+            /* Optional: Add border-radius for rounded corners */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f8f6 !important;
+            /* Gold color on hover */
+            background-color: rgba(206, 179, 25, 0.934);
+            /* Light gold background on hover */
+            border-radius: 10px;
+            /* Rounded corners when hovered */
+            padding: 10px 15px;
+            /* Ensure padding remains the same when hovered */
+        }
+
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Stylish heading */
+        h2 {
+            font-size: 2rem;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            color: #007bff;
+            text-transform: uppercase;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Centered username */
+        h1 span {
+            font-style: italic;
+            color: #28a745;
+            font-size: 1.8rem;
+        }
+
+        h1 {
+            margin-top: 7px;
+            margin-bottom: 30px;
+        }
+
+        /* Styling for subscription cards */
+        .card {
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Card body content */
+        .card-body {
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Styling for Yearly Plan Card */
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            background-color: #ffffff;
+            /* White background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Light shadow for depth */
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+
+            transform: scale(1.05);
+            /* Slightly zoom in when hovering */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            /* Darker shadow on hover */
+        }
+
+
+        .card-body {
+            padding: 20px;
+            /* Increased padding for a more spacious feel */
+            text-align: center;
+            /* Center content */
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            /* Larger font size for the title */
+            font-weight: bold;
+            color: #8a0a80;
+            /* Dark color for the title */
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            /* Uppercase for emphasis */
+            letter-spacing: 1px;
+            /* Slight letter spacing for a modern look */
+        }
+
+        .card-text {
+            font-size: 1.2rem;
+            color: #555555;
+            /* Light gray color for the price */
+            margin-bottom: 5px;
+        }
+
+        .text-warning {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #f39c12;
+            /* Yellow color for the warning text */
+            margin-bottom: 5px;
+        }
+
+        /* Star Rating */
+        .star-rating i {
+            color: #f39c12;
+            /* Yellow color for stars */
+        }
+
+        .star-rating i.fas {
+            font-size: 1.3rem;
+            /* Larger stars */
+        }
+
+        /* Button Styling */
+        .btn-light {
+            margin-top: 5px;
+            background-color: #e80d0d;
+            color: #fbf3f3;
+            border: 2px solid #333;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-light:hover {
+            background-color: #0e781f;
+            /* Yellow background on hover */
+            color: #ffffff;
+            border-color: #161513;
+            /* Matching border color */
+        }
+
+        /* Bell Icon inside the Button */
+        .btn-light i {
+            margin-right: 8px;
+            /* Spacing between the icon and text */
+            font-size: 1.2rem;
+            /* Size of the bell icon */
+        }
+
+        /* Styling for the No Plan Card */
+        .no-plan-card {
+            margin-bottom: 30px;
+            /* Add space between the rows */
+        }
+
+        .no-plan-card-body {
+            background-color: rgb(231, 231, 213);
+            /* Yellow background for the card */
+            border-radius: 10px;
+            /* Rounded corners */
+            padding: 5px;
+            /* Padding inside the card */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Light shadow */
+        }
+
+        /* Button Styling */
+        .deactivate-btn {
+            background-color: #821212;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid transparent;
+            /* Initial no fill */
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* Button Hover Effect (Red Color) */
+        .deactivate-btn:hover {
+            background-color: red;
+            color: white;
+            border: 2px solid red;
+            transform: scale(1.05);
+            /* Slight scale effect on hover */
+        }
+
+        /* Deactivate button - Active state (Red background when clicked) */
+        .deactivate-btn:active {
+            background-color: red;
+            /* Red background when clicked */
+            color: white;
+            /* White text when clicked */
+            border: 2px solid red;
+            /* Optional: border turns red as well */
+            transform: scale(0.95);
+            /* Optional: Slight shrink effect when clicked */
+        }
+
+        /* Deactivate button - Active state (Red background when clicked) */
+        .deactivate-btn:active {
+            background-color: red !important;
+            /* Red background when clicked */
+            color: white !important;
+            /* White text when clicked */
+            border: 2px solid red !important;
+            /* Optional: border turns red as well */
+            transform: scale(0.95);
+            /* Optional: Slight shrink effect when clicked */
+        }
+
+        /* Add shadow effect to the 'No Plan' title */
+        .text-shadow {
+            font-family: 'Times New Roman', Times, serif;
+            /* Times New Roman font */
+            font-weight: bolder;
+            font-size: 50px;
+            text-shadow: 2px 2px 4px rgba(224, 17, 17, 0.5);
+            /* Shadow effect */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-success navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home/book">BOOK'S_STORE</a>
+
+            <!-- Navbar Toggler Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/books">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/myLibrary">My Library</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Your Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-center">
+        <h1>Welcome,
+            <span th:if="${user != null}" th:text="${user.username}">User</span>
+            <span th:if="${user == null}">Guest</span>
+        </h1> <!-- Display username if the user is logged in, otherwise show 'Guest' -->
+    </div>
+
+    <!-- Check if the user has a plan -->
+    <div th:if="${user != null and user.subscriptionPlan == 'No Plan'}">
+        <div class="alert alert-danger" role="alert">
+            Your plan has been deactivated. Please choose a new plan to continue.
+        </div>
+    </div>
+    <!-- No Plan Option -->
+    <div class="col-12  no-plan-card">
+        <div class="card no-plan-card-body">
+            <div class="card-body">
+                <h5 class="card-title text-danger text-shadow">No Plan !...</h5>
+                <p class="card-text text-danger">Deactivate your subscription</p>
+                <form th:action="@{/subscription/choose}" method="POST" th:object="${user}" onsubmit="playBellSound()">
+                    <input type="hidden" name="plan" value="none">
+                    <button type="submit" class="deactivate-btn">
+                        <i class="bi bi-bell-slash-fill"></i> Deactivate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add the bell sound -->
+    <audio id="bellSound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+
+    <!-- Best Selling Books Section -->
+    <div class="container mt-2 text-center">
+        <h2 class="mb-4">Best Selling Books</h2>
+        <div class="row justify-content-center">
+            <!-- Best Selling Book 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="card d-flex flex-row">
+                    <!-- Left: Book Image -->
+                    <div class="col-6">
+                        <img src="https://miblart.com/wp-content/uploads/2023/04/9781529355413-667x1024.jpg"
+                            alt="Book Image" class="img-fluid w-100 h-100 object-fit-cover">
+                    </div>
+
+                    <!-- Right: Book Details -->
+                    <div class="col-6 d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Best Selling Book 1</h5>
+                        <p class="card-text">₹500</p>
+                        <p class="text-warning">Limited Time Offer!</p>
+                        <div class="star-rating">
+                            <!-- Example Star Rating -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <form th:action="@{/book/details}" method="GET">
+                            <input type="hidden" name="bookId" value="1">
+                            <button type="submit" class="btn btn-primary">View Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Selling Book 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="card d-flex flex-row">
+                    <!-- Left: Book Image -->
+                    <div class="col-6">
+                        <img src="https://bookstation.in/cdn/shop/products/8957_front.jpg?v=1675032033&width=1024"
+                            alt="Book Image" class="img-fluid w-100 h-100 object-fit-cover">
+                    </div>
+
+                    <!-- Right: Book Details -->
+                    <div class="col-6 d-flex flex-column justify-content-center">
+                        <h5 class="card-title">Best Selling Book 2</h5>
+                        <p class="card-text">₹600</p>
+                        <p class="text-warning">20% Discount!</p>
+                        <div class="star-rating">
+                            <!-- Example Star Rating -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <form th:action="@{/book/details}" method="GET">
+                            <input type="hidden" name="bookId" value="2">
+                            <button type="submit" class="btn btn-primary">View Details</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container text-center">
+        <h2 class="mb-4">Choose Your Subscription Plan</h2>
+        <div class="row justify-content-center">
+            <!-- Daily Plan -->
+            <div class="col-md-3 mb-2">
+                <div class="card ">
+                    <div class="card-body">
+                        <img src="https://miblart.com/wp-content/uploads/2023/04/9781529355413-667x1024.jpg"
+                            alt="Book Image" class="img-fluid">
+                        <h5 class="card-title">Daily Plan</h5>
+                        <p class="card-text">₹10 per day</p>
+                        <p class="text-warning">Limited Time Offer!</p>
+                        <div class="star-rating">
+                            <!-- Fixed Star Rating for Daily Plan -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <form th:action="@{/subscription/choose}" method="POST" th:object="${user}">
+                            <input type="hidden" name="plan" value="daily">
+                            <button type="submit" class="btn btn-light">
+                                <i class="bi bi-bell-fill"></i> Select
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Plan -->
+            <div class="col-md-3 mb-2">
+                <div class="card  ">
+                    <div class="card-body">
+                        <img src="https://bookstation.in/cdn/shop/products/8957_front.jpg?v=1675032033&width=1024"
+                            alt="Book Image" class="img-fluid">
+                        <h5 class="card-title">Weekly Plan</h5>
+                        <p class="card-text">₹50 per week</p>
+                        <p class="text-warning">20% Discount!</p>
+                        <div class="star-rating">
+                            <!-- Fixed Star Rating for Weekly Plan -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <form th:action="@{/subscription/choose}" method="POST" th:object="${user}">
+                            <input type="hidden" name="plan" value="weekly">
+                            <button type="submit" class="btn btn-light">
+                                <i class="bi bi-bell-fill"></i> Select
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Plan -->
+            <div class="col-md-3 mb-2">
+                <div class="card ">
+                    <div class="card-body">
+                        <img src="https://m.media-amazon.com/images/I/81TVg1gSjCL.jpg" alt="Book Image"
+                            class="img-fluid">
+                        <h5 class="card-title">Monthly Plan</h5>
+                        <p class="card-text">₹150 per month</p>
+                        <p class="text-warning">Save 15%!</p>
+                        <div class="star-rating">
+                            <!-- Fixed Star Rating for Monthly Plan -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <form th:action="@{/subscription/choose}" method="POST" th:object="${user}">
+                            <input type="hidden" name="plan" value="monthly">
+                            <button type="submit" class="btn btn-light">
+                                <i class="bi bi-bell-fill"></i> Select
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yearly Plan -->
+            <div class="col-md-3 mb-2">
+                <div class="card ">
+                    <div class="card-body">
+                        <img src="https://miblart.com/wp-content/uploads/2020/01/april-young-adult-768x1152-1.jpeg"
+                            alt="Book Image" class="img-fluid">
+                        <h5 class="card-title">Yearly Plan</h5>
+                        <p class="card-text">₹1500 per year</p>
+                        <p class="text-warning">Best Value, 30% off!</p>
+                        <div class="star-rating">
+                            <!-- Fixed Star Rating for Yearly Plan -->
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+
+                        <form th:action="@{/subscription/choose}" method="POST" th:object="${user}">
+                            <input type="hidden" name="plan" value="yearly">
+                            <button type="submit" class="btn btn-light">
+                                <i class="bi bi-bell-fill"></i> Select
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.querySelectorAll('.card form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent form submission until after the alert
+
+                let card = form.closest('.card');
+                let button = card.querySelector('button');
+                let bellIcon = button.querySelector('i');
+
+                // Check if it's the deactivate button
+                if (button.classList.contains('deactivate-btn')) {
+                    // Set red background color for the deactivate button when clicked
+                    button.style.backgroundColor = 'red'; // Red background on click
+                    button.style.color = 'white'; // White text on click
+                    button.style.border = '2px solid red'; // Red border on click
+                }
+
+                // Change card background to green if it's the activate button
+                if (button.innerText === 'Activate Plan') {
+                    card.classList.remove('bg-danger');
+                    card.classList.add('bg-success');
+                    button.innerText = 'Activate Plan';
+                    bellIcon.classList.remove('bi-bell-fill');
+                    bellIcon.classList.add('bi-bell');
+                }
+
+                // Show alert before form submission
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your ' + card.querySelector('.card-title').innerText + ' has been activated for ' + card.querySelector('.card-text').innerText,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                    didClose: () => {
+                        // Play the bell sound for 5 seconds
+                        var audio = new Audio('/static/audios/bell-a-99888.mp3');
+                        audio.play();
+
+                        // Step 4: After 5 seconds, redirect to the userBooks page
+                        setTimeout(function () {
+                            window.location.href = '/user/books'; // Redirect to userBooks.html
+                        }, 2000); // Wait 2 seconds after sound before navigation
+
+                        // After the alert closes, submit the form
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+
+        // If the user has no plan, show an alert message
+        document.addEventListener('DOMContentLoaded', function () {
+            var noPlanAlert = document.querySelector('.alert-danger');
+            if (noPlanAlert) {
+                Swal.fire({
+                    title: 'Your plan is deactivated!',
+                    text: 'Please choose a new plan to continue.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+
+
+
+        // Function to play the bell sound for 5 seconds
+        function playBellSound() {
+            var bellSound = document.getElementById('bellSound');
+            bellSound.play();  // Play the sound
+            setTimeout(function () {
+                bellSound.pause();  // Stop the sound after 5 seconds
+                bellSound.currentTime = 0;  // Reset the sound to start from the beginning
+            }, 5000);  // 5000 milliseconds = 5 seconds
+        }
+
+    </script>
+
+</body>
+
+</html>
