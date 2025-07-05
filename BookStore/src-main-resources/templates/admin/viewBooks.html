@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin || View All Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #c5d1de;
+            color: #333;
+        }
+
+        .form-control {
+            width: 500px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                height: 600px;
+                /* Adjust this to your required height */
+                overflow-y: auto;
+                /* This makes the content scrollable within the container */
+            }
+
+        }
+
+        h1 {
+            color: #748ca8;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+
+        /* Main Navbar Styles */
+        .navbar {
+            display: flex;
+            /* Use Flexbox for horizontal alignment */
+            justify-content: space-between;
+            /* Space out the left and right sections */
+            align-items: center;
+            /* Vertically align items */
+            background-color: #1b774a;
+            /* Dark background for the navbar */
+            padding: 15px;
+            /* Padding around the navbar */
+            border-radius: 5px;
+        }
+
+        /* Left Section - Home and Logout Links */
+        .homelog {
+            display: flex;
+            gap: 20px;
+            /* Space between Home and Logout */
+            align-items: center;
+            /* Align items vertically */
+        }
+
+        .homelog .navbar-brand {
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            /* Rounded corners for Home and Logout */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Hover Effect for Home and Logout Links */
+        .homelog .navbar-brand:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Right Section - Admin|BookStore Dropdown */
+        .mybookstore {
+            display: flex;
+            align-items: center;
+        }
+
+        .mybookstore .navbar-brand {
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            /* Rounded corners for Admin|BookStore link */
+        }
+
+        /* Hover Effect for Admin|BookStore Link */
+        .mybookstore .navbar-brand:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-menu {
+            border-radius: 5px;
+            /* Border radius for dropdown */
+            min-width: 200px;
+            /* Set a minimum width to prevent it from being too narrow */
+        }
+
+        /* Align the dropdown to open below and align properly */
+        .dropdown-menu-end {
+            right: 0;
+        }
+
+        /* Dropdown Item Styling */
+        .dropdown-menu .dropdown-item {
+            padding: 10px 20px;
+            border-radius: 5px;
+            /* Rounded corners for dropdown items */
+        }
+
+        /* Hover Effect for Dropdown Items */
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Optional: Adjust Navbar Brand Appearance */
+        .navbar-brand {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+
+        .editaction {
+            text-decoration: none;
+            background-color: rgb(194, 194, 52);
+            padding: 10px 40px 10px 40px;
+            color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .deleteaction {
+            text-decoration: none;
+            background-color: red;
+            padding: 10px 35px 10px 35px;
+            color: white;
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .viewbook {
+            color: white;
+            background-color: rgb(169, 87, 160);
+            padding: 15px 30px 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 500px;
+            margin-left: 500px;
+        }
+
+        .viewbook:hover {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+        }
+
+        .addbook {
+            color: white;
+            background-color: green;
+            padding: 15px 30px 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 500px;
+        }
+
+        .addbook:hover {
+            background-color: #20aad4;
+            color: white;
+            border-radius: 50px;
+        }
+
+        .editaction:hover {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+        }
+
+        .deleteaction:hover {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50px;
+        }
+
+
+
+        /* Container for the form */
+        .search-form {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Prevent the items from wrapping to the next line */
+            align-items: center;
+            /* Vertically center items */
+            gap: 20px;
+            /* Space between the inputs */
+        }
+
+        /* Styles for each input */
+        .searchname {
+            height: 40px;
+            width: 300px;
+            border-radius: 5px;
+            padding: 5px;
+
+        }
+
+        .minp {
+            height: 40px;
+            width: 120px;
+            /* Adjust width as per your need */
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .maxp {
+            height: 40px;
+            width: 120px;
+            /* Adjust width as per your need */
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .aname {
+            height: 40px;
+            width: 200px;
+            /* Adjust width as per your need */
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .Sort {
+            color: rgb(112, 220, 232);
+            font-size: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+
+        }
+
+        #sort {
+
+            border-radius: 3px;
+            height: 40px;
+            width: 150px;
+            padding: 10px;
+        }
+
+        .search {
+
+            border-radius: 5px;
+            padding: 10px 40px 10px 40px;
+            background-color: #0e60a4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .search:hover {
+            background-color: #d431b4;
+            border-radius: 50px;
+        }
+
+        /* Style the pagination */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            margin-top: 20px;
+            flex-wrap: nowrap;
+        }
+
+        .pagination-btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            text-decoration: none;
+            color: #e4eef1;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #0056b3;
+            /* Change hover color */
+            color: white;
+        }
+
+        .pagination-btn.active {
+            background-color: #007bff;
+            /* Active page color */
+            color: white;
+            border: 2px solid #0056b3;
+            /* Optional border for active page */
+        }
+
+        /* Make the pagination buttons responsive */
+        .pagination-btn {
+            font-size: 14px;
+        }
+
+        /* Optional: Adjust Button for Mobile or Small Screens */
+        @media (max-width: 768px) {
+            .pagination-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        .nav-link {
+            color: rgb(144, 142, 142);
+        }
+
+        #anch {
+            color: white;
+        }
+
+        #ac {
+            color: rgb(187, 186, 186);
+        }
+
+        .none {
+            text-decoration: none;
+        }
+
+        .hr {
+            color: rgb(14, 155, 108);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .footer-icon {
+            margin-right: 15px;
+            /* Space between icons */
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Footer Section Styling */
+        .footer-section {
+            background-color: #f4f4f4;
+            /* Light gray background */
+            padding: 30px 15px;
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+        }
+
+        /* Footer Heading Styling */
+        .footer-heading {
+            color: #4CAF50;
+            /* Green color for the heading */
+            font-family: 'Roboto', sans-serif;
+            /* Custom font family */
+            font-size: 2rem;
+            /* Larger font size */
+            font-weight: bold;
+            text-transform: uppercase;
+            /* Make text uppercase */
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            /* Slight letter spacing */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle text shadow */
+        }
+
+        /* Social Icons Customization */
+        .footer-icon img {
+            border-radius: 50%;
+            /* Make icons round */
+            transition: transform 0.3s ease-in-out;
+            /* Smooth transition for hover effect */
+        }
+
+        .footer-icon img:hover {
+            transform: scale(1.1);
+            /* Slightly increase size on hover */
+        }
+
+        /* Optional: Add a footer text section with additional information */
+        .footer-text {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .footer-heading {
+                font-size: 1.5rem;
+                /* Smaller font size on mobile */
+            }
+        }
+
+
+        .footer-links h3 {
+            color: #007bff;
+            /* Blue */
+        }
+
+        /* Remove underlines */
+        .footer-links a,
+        .footer-icon,
+        .footer-heading {
+            text-decoration: none;
+        }
+
+        /* Copyright symbol styling */
+        .footer-copyright {
+            font-size: 20px;
+            color: white;
+            background-color: #3d556d;
+            padding: 10px;
+        }
+
+        .footer-copyright a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        /* Remove the underline from the links */
+        .footer-icon {
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Make sure the anchor tag is displayed as an inline-block */
+            margin: 5px;
+            /* Add some space between icons */
+        }
+
+        /* Ensure the icons are aligned properly */
+        .footer-icon img {
+            vertical-align: middle;
+            /* Ensure the icon is aligned properly */
+            transition: opacity 0.3s;
+            /* Optional: smooth hover effect */
+        }
+
+        /* Optional: Add hover effect */
+        .footer-icon:hover img {
+            opacity: 0.5;
+            /* Slightly fade the icons when hovered */
+        }
+
+        .card-title {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 25px;
+            color: rgb(35, 182, 182);
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="navbar">
+
+            <!-- Left Side: Home and Logout Links -->
+            <div class="homelog">
+                <a class="navbar-brand" href="/admin/books">Home</a>
+                <a class="navbar-brand" href="/admin">Logout</a>
+            </div>
+
+            <!-- Right Side: Dropdown for Admin | BookStore -->
+            <div class="mybookstore">
+                <a class="navbar-brand dropdown-toggle" href="#" role="button" id="navbarDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin|BookStore
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="/admin/books">List All</a></li>
+                    <li><a class="dropdown-item" href="/admin/books/view">View All</a></li>
+                </ul>
+            </div>
+
+
+            <div class="search-query">
+                <form th:action="@{/admin/books/view}" method="get" class="search-form">
+
+                    <!-- Sort Dropdown -->
+
+                    <label for="sort" class="Sort">Sort by:</label>
+                    <select name="sort" id="sort" class="form-control">
+                        <!-- Empty or Placeholder Option -->
+                        <option value="" th:selected="${sort == ''}">Sort by...</option>
+                        <option value="name_asc" th:selected="${sort == 'name_asc'}">Name (A-Z)</option>
+                        <option value="name_desc" th:selected="${sort == 'name_desc'}">Name (Z-A)</option>
+                    </select>
+
+                    <!-- Search Fields -->
+                    <input type="text" th:name="query" th:value="${query}" placeholder="Search by book name..."
+                        class="searchname">
+                    <br>
+                    <br>
+                    <input type="text" th:name="minPrice" th:value="${minPrice}" placeholder="Min Price" class="minp">
+                    <input type="text" th:name="maxPrice" th:value="${maxPrice}" placeholder="Max Price" class="maxp">
+                    <input type="text" th:name="authorName" th:value="${authorName}" placeholder="Author Name"
+                        class="aname">
+
+                    <button type="submit" class="search">Search</button>
+                </form>
+            </div>
+
+
+
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <div class="container mt-5">
+        <h1>Admin - Show All Books</h1>
+
+        <!-- Search Query Result Message (only shows when there is a query) -->
+        <div th:if="${query != '' || minPrice != 0 || maxPrice != 0 || authorName != ''}">
+            <div class="search-query d-flex align-items-center p-3 mb-4 rounded border bg-light">
+                <!-- Green Bell Icon with Hover Effect -->
+                <i class="fas fa-bell me-3" style="color: green; font-size: 1.5rem;"></i>
+
+                <!-- Search Results Text with Styling -->
+                <div class="ms-3">
+                    <strong class="h5">Search Results for:</strong>
+
+                    <!-- Dynamically display query conditions with different colors and spacing -->
+                    <span class="fw-bold">
+                        <span th:if="${query != ''}" class="text-primary me-3" th:text="'Name: ' + ${query}">Search
+                            Term</span>
+                        <span th:if="${minPrice != 0}" class="text-success me-3"
+                            th:text="'Min Price: ₹' + ${minPrice}">Min Price</span>
+                        <span th:if="${maxPrice != 0}" class="text-warning me-3"
+                            th:text="'Max Price: ₹' + ${maxPrice}">Max Price</span>
+                        <span th:if="${authorName != ''}" class="text-danger"
+                            th:text="'Author: ' + ${authorName}">Author Name</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <a class="viewbook" href="/admin/books/view">View Books List</a>
+        <a th:href="@{/admin/books/add}" class="addbook">Add New Book</a>
+        <br>
+
+        <!-- Show Book List -->
+        <div class="row mt-5">
+
+            <div th:if="${books.totalElements > 0}">
+
+                <div class="row">
+                    <!-- Display 3 books per row (each taking up col-md-4 which means 1/3 of the row) -->
+                    <div th:each="book : ${books.content}" class="col-md-4">
+                        <div class="card mb-4">
+                            <!-- Center the image in the card using d-flex justify-content-center -->
+                            <div class="d-flex justify-content-center">
+                                <img th:if="${book.imageURL != null}" th:src="${book.imageURL}" class="card-img-top"
+                                    alt="Book Image" style="max-width: 200px;">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${book.name}"></h5>
+                                <p class="card-text"><strong>Id :</strong> <span th:text="${book.id}"></span></p>
+                                <p class="card-text"><strong>Price :</strong> ₹<span th:text="${book.price}"></span></p>
+                                <p class="card-text"><strong>Author Name :</strong> <span
+                                        th:text="${book.authorName}"></span></p>
+                                <p class="card-text"><strong>Description :</strong> <span
+                                        th:text="${book.description}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- If no books found, display an error message -->
+            <div th:if="${books.totalElements == 0}" class="alert alert-danger d-flex align-items-center" role="alert">
+                <!-- Red Bell Icon for Error -->
+                <i class="fas fa-bell me-2 text-danger"></i>
+                <p class="mb-0">No books found.</p>
+            </div>
+
+        </div>
+
+        <div th:if="${books.totalPages > 1}" class="pagination-container">
+
+            <!-- Previous Button -->
+            <a th:href="@{/admin/books/view?page={pageNum}(pageNum=${books.number - 1})}" th:if="${books.hasPrevious()}"
+                class="btn btn-secondary pagination-btn">Previous</a>
+
+            <!-- Loop through pages and create links for each page -->
+            <span th:each="pageNum : ${#numbers.sequence(0, books.totalPages - 1)}">
+                <a th:href="@{/admin/books/view?page={pageNum}(pageNum=${pageNum})}" th:text="${pageNum + 1}"
+                    class="btn pagination-btn" th:classappend="${pageNum == books.number ? ' active' : ''}">
+                </a>
+                <span>&nbsp;&nbsp;</span>
+            </span>
+
+            <!-- Next Button -->
+            <a th:href="@{/admin/books/view?page={pageNum}(pageNum=${books.number + 1})}" th:if="${books.hasNext()}"
+                class="btn btn-secondary pagination-btn">Next</a>
+        </div>
+
+        <br>
+
+    </div>
+
+
+    <!-- Bootstrap JS (Optional for collapsible navbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+    <!-- Footer Content -->
+    <div class="row mx-1 p-1"
+        style="background-color: white; border-radius: 10px;margin-bottom: 5px; text-align: center;">
+        <!--Start of Footer-->
+        <div class="col-md-5">
+            <h3 class="footer-heading"> BOOK'S STORE PVT LTD.</h3>
+            <i class="fa-solid fa-address-card"></i>
+            2nd Floor, Room no:13<br>
+            Annanagar 5th-Avenue,<br>
+            Chennai-600 028<br>
+            <a href="https://www.google.com/maps/place/Chennai,+Tamil+Nadu/@13.0478078,80.044198,11z/data=!3m1!4b1!4m6!3m5!1s0x3a5265ea4f7d3361:0x6e61a70b6863d433!8m2!3d13.0843007!4d80.2704622!16zL20vMGM4dGs?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D"
+                class="icon footer-icon-location">
+                <img src="https://i.pinimg.com/564x/d2/77/05/d27705e1b3b219af201765faf9ad20e3.jpg" alt="Google Maps"
+                    style="width: 35px; height: 35px; vertical-align: middle;">
+                View on Location
+            </a>
+
+        </div>
+        <div class="col-md-3 footer-links">
+            <h3>Quick Links</h3>
+            <a href="frontindex.html" class="anchr">Home</a>
+            <a href="" class="anchr">About Us</a>
+            <a href="sms:6361232640" class="anchr">Help</a>
+
+        </div>
+        <div class="col-md-3 ">
+            <h3>Connect Us</h3>
+            <!-- Facebook Official Icon -->
+            <a href="https://www.facebook.com" class="icon footer-icon footer-icon-facebook" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" style="width: 40px; height: 45px; vertical-align: middle;">
+            </a>
+
+            <!-- Instagram Official Icon -->
+            <a href="https://www.instagram.com" class="icon footer-icon footer-icon-instagram" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                    style="width: 40px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- LinkedIn Official Icon -->
+            <a href="https://www.linkedin.com" class="icon footer-icon footer-icon-linkedin" target="_blank">
+                <img src="https://cdn.pixabay.com/photo/2017/08/22/11/56/linked-in-2668700_1280.png" alt="LinkedIn"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Twitter Official Icon -->
+            <a href="https://twitter.com" class="icon footer-icon footer-icon-twitter" target="_blank">
+                <img src="https://img.clipart-library.com/2/clip-twitterlogo/clip-twitterlogo-32.jpg" alt="Twitter"
+                    style="width: 60px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- WhatsApp Official Icon -->
+            <a href="https://wa.me/6361232640" class="icon footer-icon footer-icon-whatsapp" target="_blank">
+                <img src="https://thumbs.dreamstime.com/b/basic-rgb-134797129.jpg" alt="WhatsApp"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Gmail Official Icon with mailto link -->
+            <a href="mailto:eswaranraja555@gmail.com" class="icon footer-icon footer-icon-gmail" target="_blank">
+                <img src="https://t4.ftcdn.net/jpg/07/30/83/21/360_F_730832157_UfU2mrMRkn4Nf83Wsea6Y3lC6UQs89L5.jpg"
+                    alt="Gmail" style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+
+        </div>
+
+    </div><!--End of footer-->
+
+    <!-- Copyright Section -->
+    <div class="text-center footer-copyright">
+        &copy; 2025 Book's Store Pvt Ltd. All rights reserved.
+    </div>
+
+</body>
+
+</html>

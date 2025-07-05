@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin || Edit Book</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles for Navbar */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .navbar {
+            background-color: #0a6b21;
+            font-weight: bold;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 18px;
+        }
+
+        .home,
+        .log,
+        .admin {
+            font-size: 20px;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .home:hover,
+        .log:hover,
+        .admin:hover {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .log {
+            margin-left: 1100px;
+        }
+
+        .addbook {
+            background-color: #007bff;
+            color: white;
+            height: 50px;
+            width: 120px;
+            border-radius: 5px;
+        }
+
+        .back {
+            background-color: #007bff;
+            color: white;
+            text-decoration-line: none;
+            margin-left: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .addbook:hover {
+            background-color: #9b2379;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+        }
+
+        .back:hover {
+            background-color: #ccc01e;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+        }
+
+        a {
+            text-decoration-line: none;
+        }
+
+        /* Center buttons */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .col-5 {
+            border: solid rgb(221, 195, 195) 1px;
+            border-radius: 5px;
+            padding: 12px 20px;
+            margin: 15px 50px;
+        }
+
+        h4 {
+            color: rgb(164, 85, 24);
+            background-color: rgb(62, 193, 232);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Spinner */
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            /* Initially hidden */
+        }
+
+        /* Custom Styles for Form */
+        .form-group {
+            margin-bottom: 0px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 0px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            margin-top: 2px;
+        }
+
+        .nav-link {
+            color: rgb(144, 142, 142);
+        }
+
+        #anch {
+            color: white;
+        }
+
+        #ac {
+            color: rgb(187, 186, 186);
+        }
+
+        .none {
+            text-decoration: none;
+        }
+
+        .hr {
+            color: rgb(14, 155, 108);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .footer-icon {
+            margin-right: 15px;
+            /* Space between icons */
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Footer Section Styling */
+        .footer-section {
+            background-color: #f4f4f4;
+            /* Light gray background */
+            padding: 30px 15px;
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow effect */
+        }
+
+        /* Footer Heading Styling */
+        .footer-heading {
+            color: #4CAF50;
+            /* Green color for the heading */
+            font-family: 'Roboto', sans-serif;
+            /* Custom font family */
+            font-size: 2rem;
+            /* Larger font size */
+            font-weight: bold;
+            text-transform: uppercase;
+            /* Make text uppercase */
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            /* Slight letter spacing */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle text shadow */
+        }
+
+        /* Social Icons Customization */
+        .footer-icon img {
+            border-radius: 50%;
+            /* Make icons round */
+            transition: transform 0.3s ease-in-out;
+            /* Smooth transition for hover effect */
+        }
+
+        .footer-icon img:hover {
+            transform: scale(1.1);
+            /* Slightly increase size on hover */
+        }
+
+        /* Optional: Add a footer text section with additional information */
+        .footer-text {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .footer-heading {
+                font-size: 1.5rem;
+                /* Smaller font size on mobile */
+            }
+        }
+
+
+        .footer-links h3 {
+            color: #007bff;
+            /* Blue */
+        }
+
+        /* Remove underlines */
+        .footer-links a,
+        .footer-icon,
+        .footer-heading {
+            text-decoration: none;
+        }
+
+        /* Copyright symbol styling */
+        .footer-copyright {
+            font-size: 20px;
+            color: white;
+            background-color: #3d556d;
+            padding: 10px;
+        }
+
+        .footer-copyright a {
+            text-decoration: none;
+            color: #666;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Remove the underline from the links */
+        .footer-icon {
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Make sure the anchor tag is displayed as an inline-block */
+            margin: 5px;
+            /* Add some space between icons */
+        }
+
+        /* Ensure the icons are aligned properly */
+        .footer-icon img {
+            vertical-align: middle;
+            /* Ensure the icon is aligned properly */
+            transition: opacity 0.3s;
+            /* Optional: smooth hover effect */
+        }
+
+        /* Optional: Add hover effect */
+        .footer-icon:hover img {
+            opacity: 0.5;
+            /* Slightly fade the icons when hovered */
+        }
+        
+        label{
+        font-weight: bolder;
+        color: #984a90;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar Start -->
+    <nav class="navbar">
+        <a class="home" href="/admin/books">Home</a>
+        <a class="log" href="/admin">Logout</a>
+        <a class="admin" href="/books">Admin | BookStore</a>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Spinner -->
+    <div class="spinner-border text-success" role="status" id="loadingSpinner">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <!-- Main Content Start -->
+    <div class="container-fluid mt-0">
+        <div class="row">
+            <div class="col-5">
+                <!-- Left Column (Image Upload) -->
+                <h4 class="text-center" style="color: #182cdc;">Upload Book Image</h4>
+                <div class="img">
+                    <input type="file" id="bookImage" class="form-control" accept="image/*"
+                        onchange="previewImage(event)">
+                    <div id="imagePreview" class="mt-2" style="display:none;">
+                        <img id="previewImg" src="" alt="Preview" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (Book Form) -->
+            <div class="col-5">
+                <h4 class="text-center">Edit Book Details</h4>
+                <!-- Form to edit a book -->
+
+                <!-- Form to edit a book -->
+                <form th:action="@{/admin/edit-book/{id}(id=${book.id})}" th:object="${book}" method="post"
+                    enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="id">Book Id</label>
+                        <input type="text" id="id" th:field="*{id}" class="form-control" placeholder="Enter book ID"
+                            readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Book Name</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" th:value="${book.name}"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="text" id="price" th:field="*{price}" class="form-control" placeholder="Enter price"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="text" id="image" th:field="*{imageURL}" class="form-control" required>
+                        <div th:if="${error}" class="alert alert-danger mt-2">
+                            <span th:text="${error}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="authorName">Author Name</label>
+                        <input type="text" id="authorName" th:field="*{authorName}" class="form-control"
+                            placeholder="Enter author name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" th:field="*{description}" class="form-control"
+                            placeholder="Enter book description" rows="3" required></textarea>
+                    </div>
+
+                    <!-- Display createdDate and modifiedDate (readonly) -->
+                    <div class="form-group">
+                        <label for="createdDate">Created Date</label>
+                        <input type="text" id="createdDate" th:value="${book.createdDate}" class="form-control"
+                            readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="modifiedDate">Modified Date</label>
+                        <input type="text" id="modifiedDate" th:value="${book.modifiedDate}" class="form-control"
+                            readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfURL">PDF URL</label>
+                        <input type="text" id="pdfURL"  th:field="*{pdfURL}" th:value="*{pdfURL}" class="form-control"
+                            placeholder="Enter PDF URL">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="audioURL">Audio URL</label>
+                        <input type="text" id="audioURL" th:field="*{audioURL}" th:value="*{audioURL}" class="form-control"
+                            placeholder="Enter Audio URL">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="videoURL">Video URL</label>
+                        <input type="text" id="videoURL"  th:field="*{videoURL}" th:value="*{videoURL}" class="form-control"
+                            placeholder="Enter Video URL">
+                    </div>
+
+                    <div class="button-container">
+                        <button type="submit" class="addbook">Update Book</button>
+                        <a href="/admin/books" class="back">Back to Books</a>
+                    </div>
+                </form>
+
+            </div>
+            
+                    <div class="spinner-border text-success mt-3" role="status" style="display:none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Preview image function
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const previewImg = document.getElementById('previewImg');
+                const imagePreview = document.getElementById('imagePreview');
+                previewImg.src = reader.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Enable the Update button when any input field changes
+        $('input, textarea').on('input', function () {
+            const isFormChanged = $('#editBookForm')[0].checkValidity();
+            if (isFormChanged) {
+                $('#updateButton').prop('disabled', false); // Enable button
+            } else {
+                $('#updateButton').prop('disabled', true); // Disable button
+            }
+        });
+
+        // Handle form submission and show/hide spinner
+        $('#editBookForm').on('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Show the spinner
+            $('#loadingSpinner').show();
+
+            // Disable the form and buttons (apply loading effect)
+            $(this).addClass('loading');
+            $('body').css('pointer-events', 'none'); // Disable interactions during submission
+
+            // Simulate form submission (for example, with AJAX or actual form submission)
+            setTimeout(() => {
+                // Hide the spinner and show the success message
+                $('#loadingSpinner').hide();
+                $('body').css('pointer-events', 'auto'); // Enable interactions again
+
+                // Here you can add actual form submission logic, e.g. AJAX call or redirect
+                alert('Form submitted successfully!');
+            }, 2000); // Simulate 2-second processing time
+        });
+    </script>
+
+    <!-- Footer Content -->
+    <div class="row mx-1 p-1" style="background-color: white; border-radius: 10px;margin-bottom: 5px; text-align: center;"><!--Start of Footer-->
+        <div class="col-md-5">
+            <h3 class="footer-heading"> BOOK'S STORE PVT LTD.</h3>
+            <i class="fa-solid fa-address-card"></i>
+            2nd Floor, Room no:13<br>
+            Annanagar 5th-Avenue,<br>
+            Chennai-600 028<br>
+            <a href="https://www.google.com/maps/place/Chennai,+Tamil+Nadu/@13.0478078,80.044198,11z/data=!3m1!4b1!4m6!3m5!1s0x3a5265ea4f7d3361:0x6e61a70b6863d433!8m2!3d13.0843007!4d80.2704622!16zL20vMGM4dGs?entry=ttu&g_ep=EgoyMDI0MDkxMS4wIKXMDSoASAFQAw%3D%3D"
+                class="icon footer-icon-location">
+                <img src="https://i.pinimg.com/564x/d2/77/05/d27705e1b3b219af201765faf9ad20e3.jpg" alt="Google Maps"
+                    style="width: 35px; height: 35px; vertical-align: middle;">
+                View on Location
+            </a>
+
+        </div>
+        <div class="col-md-3 footer-links">
+            <h3>Quick Links</h3>
+            <a href="/" class="anchr">Home</a>
+            <a href="" class="anchr">About Us</a>
+			<a href="sms:6361232640" class="anchr">Help</a>
+        </div>
+        <div class="col-md-4">
+            <h3>Connect Us</h3>
+            <!-- Facebook Official Icon -->
+            <a href="https://www.facebook.com" class="icon footer-icon footer-icon-facebook" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" style="width: 40px; height: 45px; vertical-align: middle;">
+            </a>
+
+            <!-- Instagram Official Icon -->
+            <a href="https://www.instagram.com" class="icon footer-icon footer-icon-instagram" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"
+                    style="width: 40px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- LinkedIn Official Icon -->
+            <a href="https://www.linkedin.com" class="icon footer-icon footer-icon-linkedin" target="_blank">
+                <img src="https://cdn.pixabay.com/photo/2017/08/22/11/56/linked-in-2668700_1280.png" alt="LinkedIn"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+
+            <!-- Twitter Official Icon -->
+            <a href="https://twitter.com" class="icon footer-icon footer-icon-twitter" target="_blank">
+                <img src="https://img.clipart-library.com/2/clip-twitterlogo/clip-twitterlogo-32.jpg" alt="Twitter"
+                    style="width: 60px; height: 40px; vertical-align: middle;">
+            </a>
+
+            <!-- WhatsApp Official Icon -->
+            <a href="https://wa.me/6361232640" class="icon footer-icon footer-icon-whatsapp" target="_blank">
+                <img src="https://thumbs.dreamstime.com/b/basic-rgb-134797129.jpg" alt="WhatsApp"
+                    style="width: 50px; height: 50px; vertical-align: middle;">
+            </a>
+             
+             	<!-- Gmail Official Icon with mailto link -->
+			<a href="mailto:eswaranraja555@gmail.com" class="icon footer-icon footer-icon-gmail" target="_blank">
+			    <img src="https://t4.ftcdn.net/jpg/07/30/83/21/360_F_730832157_UfU2mrMRkn4Nf83Wsea6Y3lC6UQs89L5.jpg" 
+			         alt="Gmail" 
+			         style="width: 50px; height: 50px; vertical-align: middle;">
+			</a>
+             
+
+
+        </div>
+
+    </div><!--End of footer-->
+
+    <!-- Copyright Section -->
+    <div class="text-center footer-copyright">
+        &copy; 2025  Book's Store Pvt Ltd. All rights reserved.
+    </div>
+
+
+</body>
+
+</html>
